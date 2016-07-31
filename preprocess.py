@@ -1,16 +1,21 @@
 import re
 import sys
+import csv
 
-## TODO: write script to save headers
+# NUM_HEADERS = sys.argv[3]
+
+## input and output file
 input = sys.argv[1]
 output = sys.argv[2]
 count = 0
+
+
 insertinto = re.compile("^INSERT")
 with open(output,'w') as r:
     none = 0
 
 def main():
-    count = 0
+
     with open(input,'r') as f:
         for line in f:
             #print(insertinto.match(line))
@@ -21,8 +26,12 @@ def main():
                 currLine = process_stripped_line(currLine[:-2])
 
                 with open(output,'a') as r:
-                    r.write(currLine)
-                    count+=1
+                    # csvWriter = csv.writer(r,delimiter=',',quotechar='|')
+                    for row in currLine:
+                        r.write(row+"\n")
+                    # count+=1
+            else:
+                continue
     print(count)
             #else:
             #    continue
@@ -34,10 +43,19 @@ def main():
         #print(currLine,"\n", count)
 
 def process_stripped_line(line):
-    global count
-    split = line.split("),(")
-    count += len(split)
-    return "\n".join(split)
+    global count, NUM_HEADERS
+
+    rows = line[:-1].split("),(")
+    count += len(rows)
+    for i,row in enumerate(rows):
+        row = row.split('\'')
+        if(len(row)==3):
+            rows[i] = "|"+row[0].replace(',',"|,|")+row[1]+row[2].replace(',',"|,|")+"|"
+            # print(row)
+        else:
+            rows = "ERROR ERROR" + rows
+    print(rows)
+    return rows
 
 
 
