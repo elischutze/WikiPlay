@@ -8,8 +8,9 @@ print("input:",input)
 print("output:",output)
 
 startpattern = re.compile('^CREATE TABLE')
-endpattern = re.compile('  PRIMARY KEY')
+endpattern = re.compile('^[ ]*`')
 headers = []
+
 with open(input,'r') as file:
     for line in file:
         if(not startpattern.match(line)):
@@ -17,10 +18,10 @@ with open(input,'r') as file:
             file.readline()
             continue
         else:
-            file.readline()
+            # file.readline()
             currLine = file.readline()
             print("currLine: ",currLine)
-            while( not endpattern.match(currLine)):
+            while(endpattern.match(currLine)):
                 headers.append(currLine.split('`')[1])
                 currLine = file.readline()
             break

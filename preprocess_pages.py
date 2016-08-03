@@ -11,7 +11,9 @@ input = sys.argv[1]
 output = sys.argv[2]
 
 ## Pattern to match start of INSERT statement in sql file
-insertinto = re.compile("^INSERT")
+insertinto = re.compile("^INSERT INTO")
+
+
 
 #initialize the output file (wipe before start )
 with open(output,'w') as r:
@@ -26,6 +28,8 @@ def main():
                 print("Read a line, it starts with:",currLine[:10])
                 currLine = currLine.split("VALUES (")[1]
                 lines = split_lines(currLine)
+                print("\n".join(lines))
+
                 # print(currLine)
                 with open(output,'a') as r:
                     # csvWriter = csv.writer(r,delimiter=',',quotechar='|')
@@ -48,7 +52,7 @@ def split_lines(line):
     line = line[:-3] #));
     # print(line)
     rows = line.split("),(") #rows = [line,line,line]
-    mapped_rows = map(addPipeDelimiters,iter(rows))
+    mapped_rows = map(addPipeDelimiters,iter(filter(mainNamespace,iter(rows))))
     # count += len(rows)
     # print(rows[0])
     # print(list(mapped_rows)[:2])
@@ -56,10 +60,17 @@ def split_lines(line):
 
 def addPipeDelimiters(line):
     row = line.split(",", maxsplit=2)
-    row[2] = "".join(row[2].split(",")[:-1])
+    #check for namespace 0
+
+    row[2] = row[2].split("','")[0]+"'"
     return "|"+"|,|".join(row)+"|"
+
     # print(rows)
 
+def mainNamespace(line):
+    row = line.split(",", maxsplit=2)
+    # print(row[1])
+    return(row[1]=="0")
 
 main()
 
