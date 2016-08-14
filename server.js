@@ -1,8 +1,6 @@
 // var ip = process.env.
 var port = process.env.PORT || 8000;
-
 var express = require('express');
-
 
 var routes = require('./routes');
 
