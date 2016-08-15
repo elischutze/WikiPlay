@@ -12,6 +12,10 @@
     "tsc:w": "tsc -w",
     "typings": "typings"
   },
+  "engines": {
+    "node": "6.3.0",
+    "npm":"3.10"
+  }
   "repository": {
     "type": "git",
     "url": "git+https://github.com/elischutze/WikiPlay.git"

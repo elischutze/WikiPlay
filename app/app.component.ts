@@ -1,9 +1,8 @@
-import { Component } from '@angular/core'
-
-@Component(){
+import { Component } from '@angular/core';
+@Component({
     selector: "wiki-game",
-    templateUrl: "app.component.html"
-}
+    templateUrl: "app/app.component.html"
+})
 
 export class AppComponent{
     myData = "DATA DATA DATA";
