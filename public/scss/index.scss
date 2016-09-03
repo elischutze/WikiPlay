@@ -1,0 +1,216 @@
+// index.sass
+$bg: #336699;
+$complement: #2C9E76;
+$text: #fcfcfc;
+html{height: 100%;}
+
+
+body {
+    background-color: $bg ;
+    font-family: 'Lato', sans-serif;
+    font-weight: 100;
+    color: $text;
+    text-align: center;
+    height: 100%;
+
+}
+
+h1 {
+    text-align: left;
+}
+
+p {
+
+    font-size: 1.5em;
+}
+
+a {
+    color: darken($text, 10%);
+    text-decoration: underline;
+    font-size: 1.2em;
+
+    &:hover {
+        color: $complement;
+    }
+}
+
+#intro {
+    text-align: center;
+}
+
+.container-fluid {
+    height: 100%;
+}
+
+
+.full_height {
+    vertical-align: middle;
+    height: 100%;
+}
+
+iframe {
+    width:100%;
+    height: 600px;
+    margin: 0px;
+    padding: 0px;
+    // display: none;
+  }
+
+  .button-div {
+    text-align: center;
+
+
+  }
+
+  #play-btn {
+    width: 20%;
+    // height: 5%;
+    font-size: 2em;
+    background-color: darken($bg,15%);
+    margin-top: 2%;
+    margin-bottom: 2%;
+  }
+
+
+/*
+    LOADING ANIMATION BY CSSLoad.net
+
+
+*/
+
+  .bubblingG {
+    text-align: center;
+    width:300px;
+    height:188px;
+    margin: auto;
+}
+
+.bubblingG span {
+    display: inline-block;
+    vertical-align: middle;
+    width: 38px;
+    height: 38px;
+    margin: 94px auto;
+    background: rgba(209,209,209,0.49);
+    border-radius: 188px;
+        -o-border-radius: 188px;
+        -ms-border-radius: 188px;
+        -webkit-border-radius: 188px;
+        -moz-border-radius: 188px;
+    animation: bubblingG 1.105s infinite alternate;
+        -o-animation: bubblingG 1.105s infinite alternate;
+        -ms-animation: bubblingG 1.105s infinite alternate;
+        -webkit-animation: bubblingG 1.105s infinite alternate;
+        -moz-animation: bubblingG 1.105s infinite alternate;
+}
+
+#bubblingG_1 {
+    animation-delay: 0s;
+        -o-animation-delay: 0s;
+        -ms-animation-delay: 0s;
+        -webkit-animation-delay: 0s;
+        -moz-animation-delay: 0s;
+}
+
+#bubblingG_2 {
+    animation-delay: 0.3295s;
+        -o-animation-delay: 0.3295s;
+        -ms-animation-delay: 0.3295s;
+        -webkit-animation-delay: 0.3295s;
+        -moz-animation-delay: 0.3295s;
+}
+
+#bubblingG_3 {
+    animation-delay: 0.659s;
+        -o-animation-delay: 0.659s;
+        -ms-animation-delay: 0.659s;
+        -webkit-animation-delay: 0.659s;
+        -moz-animation-delay: 0.659s;
+}
+
+
+
+@keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:rgba(250,250,250,0.98);
+        transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:rgb(51,102,153);
+        transform: translateY(-79px);
+    }
+}
+
+@-o-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:rgba(250,250,250,0.98);
+        -o-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:rgb(51,102,153);
+        -o-transform: translateY(-79px);
+    }
+}
+
+@-ms-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:rgba(250,250,250,0.98);
+        -ms-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:rgb(51,102,153);
+        -ms-transform: translateY(-79px);
+    }
+}
+
+@-webkit-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:rgba(250,250,250,0.98);
+        -webkit-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:rgb(51,102,153);
+        -webkit-transform: translateY(-79px);
+    }
+}
+
+@-moz-keyframes bubblingG {
+    0% {
+        width: 38px;
+        height: 38px;
+        background-color:rgba(250,250,250,0.98);
+        -moz-transform: translateY(0);
+    }
+
+    100% {
+        width: 90px;
+        height: 90px;
+        background-color:rgb(51,102,153);
+        -moz-transform: translateY(-79px);
+    }
+}
+
+// LOADING ANIMATION END ///
+
+
+

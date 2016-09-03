@@ -25,10 +25,9 @@ return null;
 
 }
 
-function load(){
+function load(csvFilename){
 
-
-    var fileArr =  fs.readdirSync("../../../Documents/Neo4j/wikiplay.graphdb/import");
+    var fileArr =  fs.readdirSync(csvFilename);
     var filteredFiles = _.filter(fileArr,function(filename){
         return (filename.length===7 && filename[1]==='e');
     });
@@ -45,8 +44,8 @@ function loadCSV(query){
     .run(query)
     .then( function(result){
         console.log("Result:", JSON.stringify(result.summary));
-        session.close;
-        driver.close;
+        // session.close;
+        // driver.close;
     });
 }
 
@@ -71,7 +70,7 @@ function getRandomSite(callback){
         console.log("node:", node);
         callback(node,error);
         session.close;
-        driver.close;
+
     });
 
 

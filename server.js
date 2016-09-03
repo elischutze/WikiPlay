@@ -7,6 +7,7 @@ var routes = require('./routes');
 var app = express()
 
 app.use('/',routes);
+app.use(express.static('public'));
 
 var server = app.listen(port, function(){
     console.log('Server running and listening on port %s', port);

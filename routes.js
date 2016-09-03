@@ -1,13 +1,14 @@
 var express = require('express');
 var async = require('async');
 var db = require('./neo4j.js');
+db.init();
 var util = require('util');
 
 var router = express.Router();
 
 router.get('/',function(req,res){
-    db.init();
-    res.send("App is up and running!");
+
+    res.sendFile(__dirname + "/public/index.html");
 });
 
 router.get('/random',function(req,res){
@@ -29,9 +30,11 @@ router.get('/random',function(req,res){
     console.log(results);
     nodeA=results[0];
     nodeB=results[1];
-    res.send(util.format("A: %s \n\n B: %s",nodeA.title,nodeB.title));
+    res.send({origin:nodeA.title,target:nodeB.title});
 });
    });
+
+
 
 
 module.exports = router;

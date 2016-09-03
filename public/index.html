@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>WikiPlay</title>
+        <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css?family=Lato:100,300" rel="stylesheet">
+        <script src="https://use.fontawesome.com/e88c746db1.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
+        <!-- Bootstrap CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+        <!-- Bootstrap JS -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+        <link rel="stylesheet" type="text/css" href="css/index.css">
+        <link rel="stylesheet" type="text/css" href="css/common.css">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="row full-height" >
+                <div class="col-sm-12">
+                    <h1>WIKIPLAY.me</h1>
+                </div>
+                <div class="col-sm-12 col-md-8 col-md-offset-2" id="loading" style="display:none;">
+                    <!-- LOADING ANIMATION BY CSSLoad.net -->
+                    <div class="bubblingG">
+                        <span id="bubblingG_1">
+                        </span>
+                        <span id="bubblingG_2">
+                        </span>
+                        <span id="bubblingG_3">
+                        </span>
+                    </div>
+                </div>
+                <div class="row intro">
+                <div class="col-sm-12 col-md-8 col-md-offset-2" id="intro">
+                    <p>Welcome to Wikiplay.me and get ready to play The Wikipedia Game! </p>
+                    <h3>What is the Wikipedia Game?</h3>
+                    <p>The Wikipedia Game is a race where you need to get from one random Wikipedia article to another using only the links within the article.  </p>
+                    <p>
+                        If this is your first time here, check out the official <a href="#">rules of the game.</a> </p><h4>Let's play!</h4>
+                    </div>
+                    <div class="col-sm-12 button-div">
+                        <button id="play-btn" type="button" class="btn btn-large"><i class="fa fa-play-circle" aria-hidden="true"></i> Play!</button>
+                    </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="test"></div>
+                    <div class="col-md-8 col-md-offset-2 iframe-holder">
+                        <!-- <iframe sandbox id="frame1"  src=""  onLoad="console.log("loaded");" frameBorder="0">Whoops! Browser not compatible. Please use a different browser! </iframe> -->
+                        <!-- <iframe sandbox id="frame2" src="https://en.m.wikipedia.org/wiki/Passenger_pigeon"  onLoad="console.log(this.contentWindow.location.href);" frameBorder="0">Whoops! Browser not compatible. Please use a different browser!</iframe> -->
+                    </div></div></div>
+        <script src="scripts/index.js"></script>
+                </body>
+            </html>
