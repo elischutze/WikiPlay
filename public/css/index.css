@@ -25,18 +25,24 @@ a {
 #intro {
   text-align: center; }
 
+.iframe-holder h2 {
+  display: none; }
+.iframe-holder .pagename {
+  text-decoration: underline;
+  font-size: 1.2em; }
+
+iframe {
+  width: 100%;
+  margin: 0px;
+  padding: 0px;
+  overflow: scroll; }
+
 .container-fluid {
   height: 100%; }
 
 .full_height {
   vertical-align: middle;
   height: 100%; }
-
-iframe {
-  width: 100%;
-  height: 600px;
-  margin: 0px;
-  padding: 0px; }
 
 .button-div {
   text-align: center; }
@@ -49,7 +55,7 @@ iframe {
   margin-bottom: 2%; }
 
 /*
-    LOADING ANIMATION BY CSSLoad.net
+LOADING ANIMATION BY CSSLoad.net
 
 
 */

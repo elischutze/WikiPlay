@@ -1,40 +1,27 @@
-var express = require('express');
-var async = require('async');
-var db = require('./neo4j.js');
+const express = require('express');
+const db = require('./neo4j');
+const path = require('path');
+// var async = require('async');
+// const util = require('util');
+
 db.init();
-var util = require('util');
+const router = express.Router(); // eslint-disable-line
 
-var router = express.Router();
-
-router.get('/',function(req,res){
-
-    res.sendFile(__dirname + "/public/index.html");
+router.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
-router.get('/random',function(req,res){
-
-    async.parallel([
-    function(callback){
-        db.get(function(node,err){
-        callback(err,node);
-        });
-
-    },
-    function(callback){
-        db.get(function(node,err){
-        callback(err,node);
-        });
-    }
-    ], function(err, results) {
-    // results: Node1, Node2
-    console.log(results);
-    nodeA=results[0];
-    nodeB=results[1];
-    res.send({origin:nodeA.title,target:nodeB.title});
+router.get('/random', (req, res) => {
+  Promise.all([db.get(), db.get()])
+  .then(([originNode, targetNode]) => {
+    res.redirect(`/${originNode.title}/to/${targetNode.title}`);
+  }).catch(err => {
+    console.error(err);
+  });
 });
-   });
 
-
-
-
+router.get('/:origin/to/:target', (req, res) => {
+  res.render('play',
+  { origin: req.params.origin, target: req.params.target })
+})
 module.exports = router;

@@ -1,5 +1,26 @@
+# User
 /input
 /output
-/node_modules
-*.log
 /client
+
+# Logs
+logs
+*.log
+npm-debug.log*
+*.log
+
+# Optional eslint cache
+.eslintcache
+.eslintrc.json
+
+# Dependency directories
+node_modules
+jspm_packages
+
+# Sass
+.sass-cache
+git add .*.css.map
+
+# Tests (for now)
+*tests
+*tests.*

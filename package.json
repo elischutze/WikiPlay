@@ -3,18 +3,9 @@
   "version": "1.0.0",
   "description": "A Web Application to play the Wikipedia Game",
   "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc && concurrently \"npm run tsc:w\" \"npm run lite\" ",
-    "lite": "lite-server",
-    "postinstall": "typings install",
-    "tsc": "tsc",
-    "tsc:w": "tsc -w",
-    "typings": "typings"
-  },
   "engines": {
     "node": "6.3.0",
-    "npm":"3.10"
+    "npm": "3.10"
   },
   "repository": {
     "type": "git",
@@ -30,9 +21,20 @@
   "dependencies": {
     "async": "^2.0.1",
     "express": "^4.14.0",
+    "express-handlebars": "^3.0.0",
     "lodash": "^4.14.1",
     "neo4j-driver": "^1.1.0-M01"
+  },
+  "devDependencies": {
+    "eslint": "^3.4.0",
+    "eslint-config-airbnb": "^10.0.1",
+    "eslint-config-standard": "^6.0.0",
+    "eslint-plugin-import": "^1.14.0",
+    "eslint-plugin-jquery": "^1.0.1",
+    "eslint-plugin-jsx-a11y": "^2.2.1",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-react": "^6.2.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "qunitjs": "^2.0.1"
   }
-
-
 }

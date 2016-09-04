@@ -1,14 +1,21 @@
-// var ip = process.env.
-var port = process.env.PORT || 8000;
-var express = require('express');
+// letip = process.env.
+const port = process.env.PORT || 8000;
+const express = require('express');
+const routes = require('./routes');
+const exphbs = require('express-handlebars');
 
-var routes = require('./routes');
+// Initialize Express.js
+const app = express();
 
-var app = express()
-
-app.use('/',routes);
+// Set routing for static files and endpoints
+app.use('/', routes);
 app.use(express.static('public'));
 
-var server = app.listen(port, function(){
-    console.log('Server running and listening on port %s', port);
+// Set Handlebars.js as view template engine
+app.engine('.hbs', exphbs({ defaultLayout: 'single', extname: '.hbs' }));
+app.set('view engine', '.hbs');
+
+// Initialize Server
+app.listen(port, () => {
+  console.log('Server running and listening on port %s', port); // eslint-disable-line
 });
