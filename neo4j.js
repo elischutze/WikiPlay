@@ -42,7 +42,6 @@ const load = function (csvFilename) {
   });
 };
 
-
 // returns random node object
 
 // test node id and title are not empty

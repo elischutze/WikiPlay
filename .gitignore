@@ -19,7 +19,7 @@ jspm_packages
 
 # Sass
 .sass-cache
-git add .*.css.map
+*.css.map
 
 # Tests (for now)
 *tests
