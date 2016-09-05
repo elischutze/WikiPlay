@@ -21,29 +21,7 @@ const init = () => {
   return null;
 };
 
-const loadCSV = (query) => {
-  session
-  .run(query)
-  .then((result) => {
-    console.log('Result:', JSON.stringify(result.summary));
-    // session.close;
-    // driver.close;
-  });
-}
-const load = function (csvFilename) {
-  const fileArr = fs.readdirSync(csvFilename);
-  const filteredFiles = _.filter(fileArr, (filename) =>
-   (filename.length === 7 && filename[1] === 'e')
-  );
-  // console.log(filteredFiles);
-  _.forEach(filteredFiles, (file) => {
-    const loadQuery = `USING PERIODIC COMMIT 1000 LOAD CSV from "file:///${file}" AS line WITH toint(line[0]) as from_id, line[2] as to_title MATCH (from:Page) WHERE from.id = from_id MATCH (to:Page) WHERE to.title = to_title MERGE (from)-[l:LINK]->(to)`;
-    loadCSV(loadQuery);
-  });
-};
-
 // returns random node object
-
 // test node id and title are not empty
 // test result from neo isnt empty
 const getRandomSite = () =>
@@ -89,9 +67,41 @@ const findShortestPathLength = function (origin, target, callback) {
 };
 
 
-// init();
-
 module.exports = {
   init,
   get: getRandomSite,
 };
+
+
+
+
+
+
+
+
+
+const loadCSV = (query) => {
+  session
+  .run(query)
+  .then((result) => {
+    console.log('Result:', JSON.stringify(result.summary));
+    // session.close;
+    // driver.close;
+  });
+}
+const load = function (csvFilename) {
+  const fileArr = fs.readdirSync(csvFilename);
+  const filteredFiles = _.filter(fileArr, (filename) =>
+   (filename.length === 7 && filename[1] === 'e')
+  );
+  // console.log(filteredFiles);
+  _.forEach(filteredFiles, (file) => {
+    const loadQuery = `USING PERIODIC COMMIT 1000 LOAD CSV from "file:///${file}" AS line WITH toint(line[0]) as from_id, line[2] as to_title MATCH (from:Page) WHERE from.id = from_id MATCH (to:Page) WHERE to.title = to_title MERGE (from)-[l:LINK]->(to)`;
+    loadCSV(loadQuery);
+  });
+};
+
+
+
+// init();
+

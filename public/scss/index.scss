@@ -4,7 +4,7 @@ $complement: #2C9E76;
 $text: #fcfcfc;
 
 html{
-  height: 100%;
+  // height: 100%;
 }
 
 body {
@@ -13,7 +13,7 @@ body {
   font-weight: 100;
   color: $text;
   text-align: center;
-  height: 100%;
+  height: auto;
 }
 
 h1 {
@@ -41,10 +41,10 @@ a {
 
 .iframe-holder {
 
-  // height: auto;
+  display: none;
 
-  h2 {
-    display: none;
+  h2, h3 {
+    // display: none;
   }
 
   .pagename {
@@ -55,15 +55,16 @@ a {
 
 iframe {
   width:100%;
-  // height: 100%;
+  // height: 150%;
+  height: 1000px;
   margin: 0px;
   padding: 0px;
-  overflow: scroll;
+  overflow-y:visible;
   // display: none;
 }
 
 .container-fluid {
-  height: 100%;
+  // height: 100%;
 }
 
 
@@ -77,13 +78,17 @@ iframe {
   text-align: center;
 }
 
-#play-btn {
-  width: 20%;
-  // height: 5%;
+#play-btn, #win-btn {
+  // width: 20%;
+  height: 5%;
   font-size: 2em;
   background-color: darken($bg,15%);
   margin-top: 2%;
   margin-bottom: 2%;
+}
+
+#win-btn {
+  // display: none;
 }
 
 

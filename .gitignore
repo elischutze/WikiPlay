@@ -2,6 +2,7 @@
 /input
 /output
 /client
+#.map
 
 # Logs
 logs

@@ -21,7 +21,7 @@ router.get('/random', (req, res) => {
 });
 
 router.get('/:origin/to/:target', (req, res) => {
-  res.render('play',
+  res.send(
   { origin: req.params.origin, target: req.params.target })
 })
 module.exports = router;
