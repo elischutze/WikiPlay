@@ -13,15 +13,21 @@ router.get('/', (req, res) => {
 
 router.get('/random', (req, res) => {
   Promise.all([db.get(), db.get()])
-  .then(([originNode, targetNode]) => {
-    res.redirect(`/${originNode.title}/to/${targetNode.title}`);
+  .then(([origin, target]) => {
+    console.log('origin:', origin, 'target:', target);
+    res.redirect(`/${origin.title}/to/${target.title}`);
   }).catch(err => {
     console.error(err);
   });
 });
 
-router.get('/:origin/to/:target', (req, res) => {
-  res.send(
-  { origin: req.params.origin, target: req.params.target })
+router.get('/:origin/to/:targets', (req, res) => {
+  db.pathExists(req.params.origin, req.params.targets, (result) => {
+    if (result) {
+      res.send({ origin: req.params.origin, target: req.params.targets })
+    } else {
+      res.redirect('/random')
+    }
+  })
 })
 module.exports = router;

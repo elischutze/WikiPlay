@@ -38,7 +38,7 @@ const getRandomSite = () =>
     .run(getRandomNodeQuery, params)
     .then((result) => {
       node.title = result.records[0].get('title')
-      console.log('node:', node);
+      // console.log('node:', node);
       resolve(node)
     })
     .catch((err) => {
@@ -46,7 +46,8 @@ const getRandomSite = () =>
     });
     });
 
-const findShortestPathLength = function (origin, target, callback) {
+const findShortestPathLength = function (origin, target, cb) {
+  console.log('called');
   const query = 'MATCH (origin:Page {title:{originTitle}}),(target:Page{title:{targetTitle}}),'
   + ' path=shortestpath((origin)-[:LINK*]->(target)) RETURN length(path) as length';
   const params = {
@@ -54,54 +55,28 @@ const findShortestPathLength = function (origin, target, callback) {
     targetTitle: target,
   };
   let pathSize = -1;
-
   session
   .run(query, params)
   .then((result) => {
+    console.log('...in then')
     // console.log(JSON.stringify(result))
     pathSize = result.records[0].get('length').toNumber();
+    console.log('pathSize:', pathSize);
+    if (pathSize > 0) {
+      cb(true)
+    } else if (pathSize === 0) {
+      cb(false)
+    }
+    throw new Error('No pathSize assigned');
+
     // console.log(pathSize, "in")
-    callback(pathSize);
-    session.close();
+    // callback(pathSize);
+    // session.close();
   });
 };
-
 
 module.exports = {
   init,
   get: getRandomSite,
+  pathExists: findShortestPathLength,
 };
-
-
-
-
-
-
-
-
-
-const loadCSV = (query) => {
-  session
-  .run(query)
-  .then((result) => {
-    console.log('Result:', JSON.stringify(result.summary));
-    // session.close;
-    // driver.close;
-  });
-}
-const load = function (csvFilename) {
-  const fileArr = fs.readdirSync(csvFilename);
-  const filteredFiles = _.filter(fileArr, (filename) =>
-   (filename.length === 7 && filename[1] === 'e')
-  );
-  // console.log(filteredFiles);
-  _.forEach(filteredFiles, (file) => {
-    const loadQuery = `USING PERIODIC COMMIT 1000 LOAD CSV from "file:///${file}" AS line WITH toint(line[0]) as from_id, line[2] as to_title MATCH (from:Page) WHERE from.id = from_id MATCH (to:Page) WHERE to.title = to_title MERGE (from)-[l:LINK]->(to)`;
-    loadCSV(loadQuery);
-  });
-};
-
-
-
-// init();
-
