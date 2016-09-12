@@ -1,11 +1,16 @@
 /* eslint-env jquery */
+// const socket = io.connect('http://localhost:8000/')
+// socket.on('connect', data => {
+//   console.log('connected!');
+// })
+
+
 const pretty = (title, type) => {
   if (type === 'url') {
     return encodeURIComponent(title.replace(/'/g, ''))
   }
   return title.replace(/'/g, '').replace(/_/g, ' ').replace(/\\\\\\\'/g, '\'')
 }
-
 
 $(() => {
   console.log('ready!')
@@ -43,7 +48,6 @@ $(() => {
   })
 })
 
-
 function loadFrame(data, status, xhr) {
   $('#loading').hide()
   $('#origin-title').html(pretty(data.origin))
@@ -59,16 +63,25 @@ function loadFrame(data, status, xhr) {
   })
 }
 
-// function loadPage(data,status,xhr){
-//     let url = 'https://en.m.wikipedia.org/wiki?action=render&title='+encodeURIComponent(data.origin.replace(/\'/g,''))+'origin='+encodeURIComponent(window.location.origin)
-//     $.ajax({
-//         url: url,
-//         dataType: 'html',
-//         crossDomain: true,
-//         success: function(data,status,xhr){
-//             $('.test').html(data)
+let server = '';
+let username = '';
 
-//         }
-//     })
-
-// }
+$('#username').submit((e) => {
+  e.preventDefault()
+  server = io() // eslint-disable-line
+  username = $('input', this).val()
+  console.log('form submitted with', username);
+  server.emit('setName', username)
+  $('#gamename').submit((event) => {
+    const gamename = $('input', this).val()
+    event.preventDefault()
+    console.log('game name:', gamename);
+    server.emit('joinNewGame', username, gamename)
+  })
+  server.on('error', text => {
+    console.log(text);
+  })
+  server.on('gameExists', () => {
+    console.log('"game exists"');
+  })
+})

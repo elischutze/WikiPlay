@@ -19,6 +19,9 @@ a {
   a:hover {
     color: #2C9E76; }
 
+input {
+  color: #000; }
+
 #intro {
   text-align: center; }
 

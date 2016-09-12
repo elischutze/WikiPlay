@@ -1,3 +1,7 @@
+"""
+This module gets only the headers from a Wikipedia SQL-formatted dump
+Usage: python3 getHeaders.py [SQL DUMP FILENAME] [OUTPUT FILENAME]
+"""
 import re
 import sys
 
@@ -7,32 +11,28 @@ output = sys.argv[2]
 print("input:",input)
 print("output:",output)
 
+## RegEx Expressions ##
 startpattern = re.compile('^CREATE TABLE')
 endpattern = re.compile('^[ ]*`')
+
+## init List to store the headers
 headers = []
 
+#Read headers, save locally
 with open(input,'r') as file:
     for line in file:
         if(not startpattern.match(line)):
-            # print("curr line:",line)
             file.readline()
             continue
         else:
-            # file.readline()
             currLine = file.readline()
-            print("currLine: ",currLine)
+            print("current Line: ",currLine)
             while(endpattern.match(currLine)):
                 headers.append(currLine.split('`')[1])
                 currLine = file.readline()
             break
-print("headers:",headers)
+print("Headers: ",headers)
+
+#Write headers to file
 with open(output,'a') as file:
     file.write(",".join(headers))
-
-
-
-
-
-
-
-

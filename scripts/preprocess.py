@@ -1,66 +1,78 @@
-##NOTE:most recent error is -->  unicode error 'utf-8' codec can't decode byte 0xe6 in position 6923: invalid continuation byte
+"""
+This module formats Wikipedia SQL-formatted dump into pipe-delimited CSV formats
+for Neo4j import. Make sure to run 'addDelimiters' module before import.
+Usage: python3 preprocess.py [SQL DUMP FILENAME] [OUTPUT FILENAME] [DUMP TYPE]
 
+DUMP TYPE: use 'pagenames' for titles dump or 'pagelinks' for links dump
+
+"""
 import re
 import sys
 import csv
 
-# NUM_HEADERS = sys.argv[3]
+# Check that arguments are correct
+if(not re.match("\.sql$",sys.argv[1])):
+    raise ValueError("input file must be in sql format")
+if(not sys.argv[3] == "pagelinks" and not sys.argv[3] == "pagenames"):
+    raise ValueError("argument must only be 'pagelinks' or 'pagenames'")
 
-## input and output file
-input = sys.argv[1]
-output = sys.argv[2]
+## assign arguments to global variables
+INPUT = sys.argv[1]
+OUTPUT = sys.argv[2]
+TYPE = sys.argv[3]
 
 ## Pattern to match start of INSERT statement in sql file
-insertinto = re.compile("^INSERT")
+insertinto = re.compile("^INSERT INTO")
 
-#initialize the output file (wipe before start )
-with open(output,'w') as r:
+#initialize the OUTPUT file (wipe before start )
+with open(OUTPUT,'w') as r:
     none = 0
 
 def main():
     count = 0
-    with open(input,'r') as f:
+    with open(INPUT,'r') as f:
         for line in f:
             if(insertinto.match(line)):
                 currLine = f.readline()
-                print("Read a line, it starts with:",currLine[:10])
                 currLine = currLine.split("VALUES (")[1]
                 lines = split_lines(currLine)
-                # print(currLine)
-                with open(output,'a') as r:
-                    # csvWriter = csv.writer(r,delimiter=',',quotechar='|')
+                with open(OUTPUT,'a') as r:
                     for row in lines:
                         r.write(row+"\n")
                         count+=1
-                    # count+=1
             else:
                 continue
     print(count)
-            #else:
-            #    continue
-        # while(not insertinto.match(f.readline())):
-        # if insertinto.match(f.readline())
-        # currLine = currLine.split("VALUES (")[1]
-        # currLine = currLine[:-2].split("),(")
-        #print(currLine,"\n", count)
+
+"""
+Makes each INSERT value entry it's own line
+"""
 def split_lines(line):
-    #remove trailing semicolon and parens before split on '),('
-    line = line[:-3] #));
-    # print(line)
-    rows = line.split("),(") #rows = [line,line,line]
-    mapped_rows = map(addPipeDelimiters,iter(rows))
-    # count += len(rows)
-    # print(rows[0])
-    # print(list(mapped_rows)[:2])
+    line = line[:-3]
+    rows = line.split("),(")
+    if(TYPE=="pagelinks"):
+        mapped_rows = map(addPipeDelimiters,iter(rows))
+    elif(TYPE=="pagenames"):
+        mapped_rows = map(addPipeDelimiters,iter(filter(mainNamespace,iter(rows))))
     return list(mapped_rows)
 
+"""
+We add pipe '|' delimiters to avoid conflicts with commas inside our fields
+"""
 def addPipeDelimiters(line):
     row = line.split(",", maxsplit=2)
-    row[2] = "".join(row[2].split(",")[:-1])
+    if(TYPE=="pagelinks"):
+        row[2] = "".join(row[2].split(",")[:-1])
+    elif(TYPE=="pagenames"):
+        row[2] = row[2].split("','")[0]+"'"
     return "|"+"|,|".join(row)+"|"
-    # print(rows)
 
+"""
+Check for main namespace 0
+"""
+def mainNamespace(line):
+    row = line.split(",", maxsplit=2)
+    return(row[1]=="0")
 
-main()
-
-
+if __name__ == "__main__":
+    main()

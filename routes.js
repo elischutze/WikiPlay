@@ -11,6 +11,14 @@ router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '/public/index.html'));
 });
 
+router.get('/rooms', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/play.html'));
+})
+
+router.get('/solo', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/solo.html'));
+})
+
 router.get('/random', (req, res) => {
   Promise.all([db.get(), db.get()])
   .then(([origin, target]) => {
