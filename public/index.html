@@ -4,6 +4,7 @@
   <title>WikiPlay</title>
   <meta charset="UTF-8">
   <link href="https://fonts.googleapis.com/css?family=Work+Sans:100,300" rel="stylesheet">
+  <script src="scripts/indexOfPolyfill.js"></script>
   <script src="https://use.fontawesome.com/e88c746db1.js"></script>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <script src="https://code.jquery.com/jquery-3.1.0.min.js"   integrity="sha256-cCueBR6CsyA4/9szpPfrX3s49M9vUU5BgtiJj06wt/s="   crossorigin="anonymous"></script>
@@ -66,8 +67,13 @@
 
       <form id='gamename'>
         <input type="text">
-        <input type="submit" class="btn btn-large" id="newgame" value='start new game'></form>
-      <input class="btn btn-large" id="joingame">Join Existing Game</input>
+        <input type="submit" class="btn btn-large" id="newgame" value='start new game'>
+      </form>
+      <form id='existinggame'>
+        <input type="text">
+        <input type="submit" class="btn btn-large" id="oldgame" value='join existing game'>
+      </form>
+
     </div>
     <script src="scripts/index.js"></script>
 

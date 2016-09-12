@@ -66,21 +66,32 @@ function loadFrame(data, status, xhr) {
 let server = '';
 let username = '';
 
-$('#username').submit((e) => {
+$('#username').submit(function (e) {
   e.preventDefault()
   server = io() // eslint-disable-line
-  username = $('input', this).val()
+  const $this = $(this)
+  username = $this.find('input').val()
   console.log('form submitted with', username);
   server.emit('setName', username)
-  $('#gamename').submit((event) => {
-    const gamename = $('input', this).val()
+
+  $('#gamename').submit(function (event) {
+    const gamename = $(this).find('input').val()
     event.preventDefault()
     console.log('game name:', gamename);
     server.emit('joinNewGame', username, gamename)
   })
+
+  $('#existinggame').submit(function (event) {
+    const findname = $(this).find('input').val()
+    event.preventDefault()
+    console.log('tryna join game:', findname);
+    server.emit('joinGame', username, findname)
+  })
+
   server.on('error', text => {
     console.log(text);
   })
+
   server.on('gameExists', () => {
     console.log('"game exists"');
   })

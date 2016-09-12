@@ -37,6 +37,7 @@ const getRandomSite = () =>
       session
     .run(getRandomNodeQuery, params)
     .then((result) => {
+
       node.title = result.records[0].get('title')
       // console.log('node:', node);
       resolve(node)
@@ -47,7 +48,7 @@ const getRandomSite = () =>
     });
 
 const findShortestPathLength = function (origin, target, cb) {
-  console.log('called with',origin,'and',target);
+  console.log('called with', origin, 'and', target);
   const query = 'MATCH (origin:Page {title:{originTitle}}),(target:Page{title:{targetTitle}}),'
   + ' path=shortestpath((origin)-[:LINK*]->(target)) RETURN length(path) as length';
   const params = {
@@ -58,6 +59,9 @@ const findShortestPathLength = function (origin, target, cb) {
   session
   .run(query, params)
   .then((result) => {
+    if (result.records.length === 0){
+      cb(false)
+    }
     console.log('...in then')
     console.log(result);
     // console.log(JSON.stringify(result))

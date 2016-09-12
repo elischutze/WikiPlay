@@ -4,7 +4,7 @@ function Game(name, creator) {
   this.players = [creator]
 }
 
-Game.prototype.addPlayer = (player) => {
+Game.prototype.addPlayer = function (player) {
   this.players.push(player)
 };
 
