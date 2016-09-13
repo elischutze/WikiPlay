@@ -67,6 +67,10 @@ module.exports = io => {
       // check game exists
       if (Object.keys(games).indexOf(room) >= 0) {
         games[room].addPlayer(name)
+        client.join(room)
+        console.log('this game has ', games[room].players);
+        // client.emit('existingplayers',players)
+        io.to(room).emit('userjoin', games[room].players)
       } else {
         client.emit('error', 'That game does not exist')
       }
