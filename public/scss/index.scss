@@ -1,5 +1,5 @@
 // index.sass
-$bg: #336699;
+$bg: #bf4040;//#6699cc; // #336699;
 $complement: #2C9E76;
 $text: #fcfcfc;
 
@@ -82,7 +82,7 @@ iframe {
   text-align: center;
 }
 
-#play-btn, #win-btn {
+#play-btn, #win-btn, #play-friends-btn {
   // width: 20%;
   height: 5%;
   font-size: 2em;
@@ -94,6 +94,21 @@ iframe {
 #win-btn {
   // display: none;
 }
+
+// BUTTONS
+#username, #gamename, #existinggame, .user-holder, .new-game-holder {
+  display: none;
+}
+
+.user-holder {
+  left: 30px;
+}
+
+
+
+
+
+
 
 
 /*

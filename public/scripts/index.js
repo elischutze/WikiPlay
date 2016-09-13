@@ -15,6 +15,11 @@ const pretty = (title, type) => {
 $(() => {
   console.log('ready!')
 
+  $('#play-friends-btn').click (e => {
+    $('.intro').fadeOut()
+    $('#username').fadeIn()
+  })
+
   $('#play-btn').click((event) => {
     $.ajax({
       url: 'http://localhost:8000/random',
@@ -71,6 +76,9 @@ $('#username').submit(function (e) {
   server = io() // eslint-disable-line
   const $this = $(this)
   username = $this.find('input').val()
+  $('.user-holder').html('<i class="fa fa-user" aria-hidden="true"> ' + username).fadeIn()
+  $this.fadeOut()
+  $('.new-game-holder').fadeIn()
   console.log('form submitted with', username);
   server.emit('setName', username)
 

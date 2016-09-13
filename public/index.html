@@ -20,8 +20,9 @@
   <div class="container-fluid">
     <div class="row full-height" >
       <!-- <a href="/rooms" type="button" class="btn btn-large">Play</a> -->
-      <div class="col-sm-12">
+      <div class="col-sm-12 header">
         <h1><i class="fa fa-play-circle" aria-hidden="true"></i> WikiPlay.me</h1>
+        <h1 class="user-holder"></h1>
       </div>
       <div class="col-sm-12 col-md-8 col-md-offset-2" id="loading" style="display:none;">
         <!-- LOADING ANIMATION BY CSSLoad.net -->
@@ -44,11 +45,15 @@
           If this is your first time here, check out the official <a href="#">rules of the game.</a> </p><h4>Let's play!</h4>
         </div>
         <div class="col-sm-12 button-div">
-          <button id="play-btn" type="button" class="btn btn-large"><i class="fa fa-play-circle" aria-hidden="true"></i> Play!</button>
+          <button id="play-btn" type="button" class="btn btn-large"><i class="fa fa-play-circle" aria-hidden="true"></i> Play Now!</button>
+          <button id="play-friends-btn" type="button" class="btn btn-large"><i class="fa fa-users" aria-hidden="true"></i> Play With Friends</button>
         </div>
       </div>
       <div class="container-fluid">
-        <div class="test">
+        <div class="new-game-holder">
+          <h2> Welcome! </h2>
+          <button id="newGameBtn" type="button" class="btn btn-large"><i class="fa fa-plus" aria-hidden="true"></i> New Game</button>
+          <button id="joinGameBtn" type="button" class="btn btn-large"><i class="fa fa-users" aria-hidden="true"></i> Join Game</button>
         </div>
         <div class="col-md-8 col-md-offset-2 iframe-holder">
           <h2>Get to <span id="target-title" class="pagename"></span><br> from <span id="origin-title" class="pagename"></span></h2>
@@ -64,7 +69,6 @@
         <input type="text">
         <input type="submit" value="Enter username" class="btn btn-large">
       </form>
-
       <form id='gamename'>
         <input type="text">
         <input type="submit" class="btn btn-large" id="newgame" value='start new game'>
