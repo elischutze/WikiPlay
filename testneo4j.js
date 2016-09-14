@@ -36,27 +36,29 @@ const getPaths = (titles) =>
     })
     })
 
-const get10RandomSitesNew = () =>
-      new Promise((resolve, reject) => {
-        const getRandomNodeQuery =
-        `MATCH (origin:Page)
-        WITH * ORDER BY rand() LIMIT 10
-        RETURN origin.title as title`
-        const titlelist = []
-        session
-      .run(getRandomNodeQuery).subscribe({
-        onNext: (record) => {
-          titlelist.push(record.get('title'))
-        },
-        onCompleted: () => {
-          if (titlelist.length === 10) {
-            console.log('got titles:',titlelist);
-            resolve(titlelist)
-          }
-        },
-        onError: (error) => reject(error)
-      })
-      })
+
+    const get10RandomSitesNew = () =>
+          new Promise((resolve, reject) => {
+            const limit = 6
+            const getRandomNodeQuery =
+            `MATCH (origin:Page)
+            WITH * ORDER BY rand() LIMIT {l}
+            RETURN origin.title as title`
+            const titlelist = []
+            session
+          .run(getRandomNodeQuery,{l:limit}).subscribe({
+            onNext: (record) => {
+              titlelist.push(record.get('title'))
+            },
+            onCompleted: () => {
+              if (titlelist.length === limit) {
+                console.log('got titles:',titlelist);
+                resolve(titlelist)
+              }
+            },
+            onError: (error) => reject(error)
+          })
+          })
 
 get10RandomSitesNew()
   .then((titles) => {

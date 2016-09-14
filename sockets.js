@@ -58,6 +58,7 @@ module.exports = io => {
         games[room].addPlayer(name)
         client.join(room)
         client.emit('room', room)
+        // client.emit('current scores',games[room].players)
         io.to(room).emit('userjoin', games[room].players)
       } else {
         client.emit('game-doesnt-exist', 'That game does not exist')
@@ -70,10 +71,16 @@ module.exports = io => {
     })
 
     client.on('setNewRound', (round, room) => {
-      console.log(games)
       games[room].newRound(round)
       client.broadcast.to(room).emit('newRound', round)
     })
+
+    client.on('increment counter', (num, room) => {
+      console.log('server received increment counter, game:', games[room])
+      games[room].clicked(players[client.id].name)
+      client.broadcast.to(room).emit('increment', players[client.id].name, num)
+    })
+
 // client.on list end
   })
 }

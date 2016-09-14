@@ -1,17 +1,19 @@
 /* eslint-env jquery */
 
 // GLOBAL VARS
-let PATH
+let PATH, ROUND, GROUP, SOCKET
 let DONE = false
-let ROUND
 let server = ''
 let username = ''
 let gamename = ''
+newRound()
 
 // DOCUMENT READY
 $(() => {
   console.log('ready!')
-  newRound()
+
+  // IFRAME ONLOAD EVENT CLICK COUNTER
+
 
   // SOLO PLAY BUTTON CLICK EVENT
   $('#play-btn').click((event) => {
@@ -21,12 +23,14 @@ $(() => {
     } else {
       $('.iframe-holder').show()
     }
+
   })
 
   // FRIENDS PLAY BUTTON CLICK EVENT
   $('#play-friends-btn').click(e => {
     $('.intro').fadeOut()
     $('#username').fadeIn()
+    GROUP = true
   })
 
   // DECIDE TO MAKE NEW GAME ROOM
@@ -60,6 +64,7 @@ SOCKET LOGIC
 $('#username').submit(function (e) {
   e.preventDefault()
   server = io() // eslint-disable-line
+  SOCKET = server
   const $this = $(this)
   username = $this.find('input').val()
   $('.user-holder').fadeIn().append('<li><i class="fa fa-user" aria-hidden="true"></i></li> ' + username)
@@ -102,24 +107,26 @@ $('#username').submit(function (e) {
     // Socket
     server.emit('joinGame', username, findname)
     if (!$('.warning').is(':visible')) {
-      server.emit('getRound')
+      gamename = findname
+      server.emit('getRound', findname)
       // DOM
       $('#loading').show()
       $('input[type="text"]', this).val('')
       $(this).fadeOut()
+      $('.new-game-holder').fadeOut()
     }
   })
 
   // USER HAS JOINED ROOM, emmitted to all room players
   server.on('userjoin', players => {
     $('.user-holder').html('')
-    for (var i = 0; i < players.length; i++) {
-      $('.user-holder').append('<li id="' + players[i] +
-      '"><i class="fa fa-user" aria-hidden="true"></i><br> ' +
-       players[i] + '<br><span class="score">0</span></li>')
+    for (var i = 0; i < Object.keys(players).length; i++) {
+      $('.user-holder').append(`<li id="${Object.keys(players)[i]}"><i class="fa fa-user" aria-hidden="true"></i><br>
+       ${Object.keys(players)[i]}<br><span class="score">${players[Object.keys(players)[i]]}</span></li>`)
     }
   })
 
+  // INCOMING SOCKET MESSAGE HANDLERS
   server.on('newRound', round => {
     ROUND = round
     loadFrame(round)
@@ -141,6 +148,11 @@ $('#username').submit(function (e) {
   // Player tried to join game that doesn't exist
   server.on('game-doesnt-exist', err => {
     $('.new-game-holder').prepend(`<p class="warning">${err}</p>`)
+    $('.loading').hide()
+  })
+
+  server.on('increment', (name, num) => {
+    $('#' + name + ' .score').html(num)
   })
 })
 
@@ -167,34 +179,35 @@ function newRound () {
   })
 }
 function loadFrame (data) {
-
   $('#origin-title').html(pretty(data.origin.toString()))
   $('#target-title').html(pretty(data.target.toString()))
   $('#frame1').remove()
+  const counter = $('#counter')
+  counter.html('')
   let $iframe = $('<iframe>',
   { id: 'frame1',
-  src: `https://en.m.wikipedia.org/wiki?title=${pretty(data.origin, 'url')}`,
   class: 'embed-responsive-item',
   sandbox: ''
-  })
+}).on('load', () => {
+  console.log('on load')
+  if (counter.html() === '') {
+    counter.html('0')
+  } else {
+    const num = parseInt(counter.html(), 10) + 1
+    counter.html(num)
+    $('#' + username + ' .score').html(num)
+    if (GROUP) {
+      SOCKET.emit('increment counter', num, gamename)
+    }
+  }
+}).attr('src', `https://en.m.wikipedia.org/wiki?title=${pretty(data.origin, 'url')}`)
+
+  // show iframe
   $iframe.appendTo($('.iframe-holder'))
   if ($('#loading').is(':visible')) {
     $('#loading').hide()
-    // $('.iframe-holder h2').show()
-    // $('.iframe-holder h3').show()
     $('.iframe-holder').show()
-    // $('.frame')
   }
-  // IFRAME CLICK COUNTER
-  $('#frame1').on('load', () => {
-    const counter = $('#counter')
-    if (counter.html() === '') {
-      counter.html('0')
-    } else {
-      const num = parseInt(counter.html(), 10) + 1
-      counter.html(num)
-    }
-  })
   PATH = data.path
 }
 function pretty (title, type) {

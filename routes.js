@@ -20,16 +20,11 @@ router.get('/', (req, res) => {
 // })
 
 router.get('/random', (req, res) => {
-  db.get()
-  .then(articles => {
-    db.pathExists(articles).then(node => {
-      res.send({ origin: node.origin, target: node.target, path: node.length })
-    })
-    .catch(() => res.redirect('/random'))
-    console.log('articles', articles)
+  db.get().then(node => {
+    res.send({origin: node.origin, target: node.target, path: node.length})
   })
-  .catch(err => {
-    console.error(err)
+  .catch((err) => {
+    console.log('err:', err)
     res.redirect('/random')
   })
 })
