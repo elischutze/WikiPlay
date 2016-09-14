@@ -1,34 +1,19 @@
 /* eslint-env jquery */
 
+// GLOBAL VARS
 let PATH
 let DONE = false
+let ROUND
+let server = ''
+let username = ''
+let gamename = ''
+
+// DOCUMENT READY
 $(() => {
   console.log('ready!')
+  newRound()
 
-  $('#play-friends-btn').click(e => {
-    $('.intro').fadeOut()
-    $('#username').fadeIn()
-  })
-
-  // $('#play-btn').click((event) => {
-  $.ajax({
-    url: 'http://localhost:8000/random',
-    beforeSend: () => {
-      // $('.intro').fadeOut()
-      // $('#loading').show()
-    },
-    dataType: 'json',
-    error: (xhr, status, err) => console.log(status, err),
-    success: (data, status, xhr) => {
-      // loadPage(data,status,xhr)
-      loadFrame(data, status, xhr)
-      DONE = true
-      console.log(status)
-      console.log(data)
-    }
-  })
-  // })
-
+  // SOLO PLAY BUTTON CLICK EVENT
   $('#play-btn').click((event) => {
     $('.intro').fadeOut()
     if (!DONE) {
@@ -36,39 +21,42 @@ $(() => {
     } else {
       $('.iframe-holder').show()
     }
-
   })
 
-  $('#frame1').on('load', () => {
-    const counter = $('#counter')
-    if (counter.html() === '') {
-      counter.html('0')
-    } else {
-      const num = parseInt(counter.html(), 10) + 1
-      counter.html(num)
-    }
+  // FRIENDS PLAY BUTTON CLICK EVENT
+  $('#play-friends-btn').click(e => {
+    $('.intro').fadeOut()
+    $('#username').fadeIn()
   })
 
+  // DECIDE TO MAKE NEW GAME ROOM
   $('#newGameBtn').click(() => {
     $('.new-game-holder button').fadeOut()
     $('#gamename').fadeIn()
   })
 
+  // JOIN EXISTING GAME ROOM
   $('#joinGameBtn').click(() => {
     $('.new-game-holder button').fadeOut()
     $('#existinggame').fadeIn()
   })
 
+  // WHEN YOU WIN
   $('#win-btn').click(() => {
     $('.iframe-holder').prepend($('<h2>Congrats!</h2><br><h2>The best path is ' +
     PATH + ' clicks!</h2>'))
   })
 })
 
-// SOCKET LOGIC
-let server = ''
-let username = ''
+/*
+SOCKET LOGIC
+- message reception
+- game room form submissions
 
+*/
+
+
+// NEW USER
 $('#username').submit(function (e) {
   e.preventDefault()
   server = io() // eslint-disable-line
@@ -80,64 +68,138 @@ $('#username').submit(function (e) {
   console.log('form submitted with', username)
   server.emit('setName', username)
 
+  // NEW GAME ROOM NAME FORM
   $('#gamename').submit(function (event) {
-    const gamename = $(this).find('input').val()
+    // Variables
+    gamename = $(this).find('input').val()
+    // Prep
+    $('.warning').hide()
     event.preventDefault()
-    console.log('game name:', gamename)
+    // Socket
     server.emit('joinNewGame', username, gamename)
+    // DOM
+    // $('#loading').show()
+    $('input[type="text"]', this).val('')
+    $('.new-game-holder').fadeOut()
+    $(this).fadeOut()
+    if (!DONE) {
+      $('#loading').show()
+    } else {
+      server.emit('setNewRound', ROUND, gamename)
+      $('.iframe-holder').show()
+    }
+
+    // loadFrame(ROUND)
   })
 
+  // JOIN EXISTING GAME ROOM FORM
   $('#existinggame').submit(function (event) {
+    // Variables
     const findname = $(this).find('input').val()
+    // Prep
     event.preventDefault()
-    console.log('tryna join game:', findname)
+    ROUND = ''
+    // Socket
     server.emit('joinGame', username, findname)
-  })
-
-  // server.on('userjoin', username => {
-  //   console.log('user joined game:',username);
-  //   $('.user-holder').append('<li><i class="fa fa-user" aria-hidden="true"></i> ' + username + '</li>')
-  // })
-
-  server.on('userjoin', players => {
-    $('.user-holder').html('')
-    for (var i = 0; i < players.length; i++) {
-        $('.user-holder').append('<li><i class="fa fa-user" aria-hidden="true"></i> ' + players[i] + '</li>')
+    if (!$('.warning').is(':visible')) {
+      server.emit('getRound')
+      // DOM
+      $('#loading').show()
+      $('input[type="text"]', this).val('')
+      $(this).fadeOut()
     }
   })
 
+  // USER HAS JOINED ROOM, emmitted to all room players
+  server.on('userjoin', players => {
+    $('.user-holder').html('')
+    for (var i = 0; i < players.length; i++) {
+      $('.user-holder').append('<li id="' + players[i] +
+      '"><i class="fa fa-user" aria-hidden="true"></i><br> ' +
+       players[i] + '<br><span class="score">0</span></li>')
+    }
+  })
+
+  server.on('newRound', round => {
+    ROUND = round
+    loadFrame(round)
+  })
+
+  server.on('room', room => {
+    $('.game-name-holder').html(room).show()
+  })
+  // Error log message
   server.on('error', text => {
     console.log(text)
   })
 
+  // Game already exists
   server.on('gameExists', () => {
     console.log('"game exists"')
   })
+
+  // Player tried to join game that doesn't exist
+  server.on('game-doesnt-exist', err => {
+    $('.new-game-holder').prepend(`<p class="warning">${err}</p>`)
+  })
 })
 
-function loadFrame (data, status, xhr) {
+/*
+HELPER FUNCTIONS
+*/
+// $('#play-btn').click((event) => {
+function newRound () {
+  $.ajax({
+    url: 'http://localhost:8000/random',
+    beforeSend: () => {
+      // $('.intro').fadeOut()
+      // $('#loading').show()
+    },
+    dataType: 'json',
+    error: (xhr, status, err) => console.log(status, err),
+    success: (data, status, xhr) => {
+      loadFrame(data)
+      ROUND = data
+      DONE = true
+      console.log(status)
+      console.log(data)
+    }
+  })
+}
+function loadFrame (data) {
+
   $('#origin-title').html(pretty(data.origin.toString()))
   $('#target-title').html(pretty(data.target.toString()))
-  $('#frame1').attr({
-    src: `https://en.m.wikipedia.org/wiki?title=${pretty(data.origin, 'url')}`,
-    class: 'embed-responsive-item',
-    sandbox: ''
+  $('#frame1').remove()
+  let $iframe = $('<iframe>',
+  { id: 'frame1',
+  src: `https://en.m.wikipedia.org/wiki?title=${pretty(data.origin, 'url')}`,
+  class: 'embed-responsive-item',
+  sandbox: ''
   })
-  if($('#loading').is(":visible")){
+  $iframe.appendTo($('.iframe-holder'))
+  if ($('#loading').is(':visible')) {
     $('#loading').hide()
     // $('.iframe-holder h2').show()
     // $('.iframe-holder h3').show()
     $('.iframe-holder').show()
     // $('.frame')
   }
+  // IFRAME CLICK COUNTER
+  $('#frame1').on('load', () => {
+    const counter = $('#counter')
+    if (counter.html() === '') {
+      counter.html('0')
+    } else {
+      const num = parseInt(counter.html(), 10) + 1
+      counter.html(num)
+    }
+  })
   PATH = data.path
 }
-
 function pretty (title, type) {
   if (type === 'url') {
     return encodeURIComponent(title.replace(/'/g, ''))
   }
-  console.log(title);
-  console.log(title.toString);
   return title.replace(/'/g, '').replace(/_/g, ' ').replace(/\\\\\\\'/g, '\'')
 }

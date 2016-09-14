@@ -53,12 +53,16 @@ iframe {
   margin-top: 2%;
   margin-bottom: 2%; }
 
-#username, #gamename, #existinggame, .user-holder, .new-game-holder {
-  display: none; }
-
 .user-holder {
   left: 30px;
-  list-style: none; }
+  list-style: none;
+  display: inline-block; }
+
+.score {
+  font-size: 1.2em; }
+
+#username, #gamename, #existinggame, .user-holder, .new-game-holder {
+  display: none; }
 
 /*
 LOADING ANIMATION BY CSSLoad.net

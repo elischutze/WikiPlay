@@ -96,15 +96,20 @@ iframe {
   // display: none;
 }
 
+.user-holder {
+  left: 30px;
+  list-style: none;
+  display: inline-block;
+}
+
+.score {
+  font-size: 1.2em;
+}
 // BUTTONS
 #username, #gamename, #existinggame, .user-holder, .new-game-holder {
   display: none;
 }
 
-.user-holder {
-  left: 30px;
-  list-style: none;
-}
 
 
 

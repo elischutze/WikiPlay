@@ -1,16 +1,12 @@
 const Game = require('./game')
-
 const players = {}
 const games = {}
-
 module.exports = io => {
   io.on('connection', (client) => {
-    console.log('User connected');
     players[client.id] = { name: null, room: null }
-    console.log('players:\n', players);
 
     client.on('disconnect', () => {
-      // if (players[client.id].name) {
+      // TODO if (players[client.id].name) {
       //   for (let game = 0; game < Object.keys(games).length; game++) {
       //     const index = games[Object.keys[game]].players.indexOf(players[client.id].name)
       //     if (index >= 0) {
@@ -19,30 +15,23 @@ module.exports = io => {
       //   }
       // }
       delete players[client.id]
-      console.log('Removed \n players:', players);
     })
-
     client.on('setName', name => {
       // TODO if name already exists
       players[client.id].name = name
-      console.log('Added Name! \n players:', players);
     })
-
     client.on('joinNewGame', (name, room) => {
-      console.log('join new game:');
-      console.log('Game name:', room);
-      console.log('name:', name);
       // check if player exists
       if (client.id in players) {
-        console.log('player exists!');
         if (players[client.id].room === null) {
           // check if gamename exists
           if (!games[room]) {
             const newGame = new Game(room, name)
-            console.log('new game created:', newGame, '\n');
             games[room] = newGame
-            console.log('current games', games, '\n');
             client.join(room)
+            io.to(room).emit('userjoin', games[room].players)
+            client.emit('made-joined-room', room)
+            client.emit('room', room)
           } else {
             client.emit('gameExists')
           }
@@ -51,11 +40,12 @@ module.exports = io => {
         }
       } else {
         players[client.id] = { name, room }
-        console.log('players:', players);
         if (!games[room]) {
           const newGame = new Game(room, name)
           games[room] = newGame
           client.join(room)
+          io.to(room).emit('userjoin', games[room].players)
+          client.emit('room', room)
         } else {
           client.emit('gameExists')
         }
@@ -63,17 +53,27 @@ module.exports = io => {
     }) // end on join new game
 
     client.on('joinGame', (name, room) => {
-      console.log('current games:', Object.keys(games), room.toString());
       // check game exists
       if (Object.keys(games).indexOf(room) >= 0) {
         games[room].addPlayer(name)
         client.join(room)
-        console.log('this game has ', games[room].players);
-        // client.emit('existingplayers',players)
+        client.emit('room', room)
         io.to(room).emit('userjoin', games[room].players)
       } else {
-        client.emit('error', 'That game does not exist')
+        client.emit('game-doesnt-exist', 'That game does not exist')
       }
     })
+
+    client.on('getRound', (room) => {
+      let round = games[room].round
+      client.emit('newRound', round)
+    })
+
+    client.on('setNewRound', (round, room) => {
+      console.log(games)
+      games[room].newRound(round)
+      client.broadcast.to(room).emit('newRound', round)
+    })
+// client.on list end
   })
-};
+}
