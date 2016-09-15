@@ -1,5 +1,5 @@
 body {
-  background-color: #bf4040;
+  background-color: #00b3b3;
   font-family: 'Work Sans', sans-serif;
   font-weight: 100;
   color: #fcfcfc;
@@ -11,7 +11,7 @@ h1 {
   font-family: inherit; }
 
 p {
-  font-size: 1.5em; }
+  font-size: 1.4em; }
 
 a {
   color: #e3e3e3;
@@ -19,6 +19,14 @@ a {
   font-size: 1.2em; }
   a:hover {
     color: #2C9E76; }
+
+.home {
+  text-decoration: none; }
+  .home:hover {
+    color: currentColor;
+    text-decoration: none; }
+  .home h1 {
+    padding-left: 15px; }
 
 input {
   color: #000; }
@@ -30,7 +38,7 @@ input {
   display: none; }
   .iframe-holder .pagename {
     text-decoration: underline;
-    font-size: 1.2em; }
+    font-size: 1.1em; }
 
 iframe {
   width: 100%;
@@ -49,7 +57,7 @@ iframe {
 #play-btn, #win-btn, #play-friends-btn {
   height: 5%;
   font-size: 2em;
-  background-color: #862d2d;
+  background-color: #006767;
   margin-top: 2%;
   margin-bottom: 2%; }
 
@@ -59,7 +67,7 @@ iframe {
   display: inline-block; }
 
 .score {
-  font-size: 1.2em; }
+  font-size: 1.1em; }
 
 #username, #gamename, #existinggame, .user-holder, .new-game-holder {
   display: none; }

@@ -1,5 +1,5 @@
 // index.sass
-$bg: #bf4040;//#6699cc; // #336699;
+$bg: #00b3b3;//#cc5200;//#e65c00;//#336699;//#bf4040;//#00b3b3;////#6699cc; //
 $complement: #2C9E76;
 $text: #fcfcfc;
 
@@ -23,7 +23,7 @@ h1 {
 
 p {
 
-  font-size: 1.5em;
+  font-size: 1.4em;
 }
 
 a {
@@ -34,6 +34,20 @@ a {
   &:hover {
     color: $complement;
   }
+}
+
+.home {
+
+  text-decoration: none;
+  &:hover {
+    color: currentColor;
+    text-decoration: none;
+  }
+
+  h1 {
+    padding-left: 15px;
+  }
+
 }
 
 input {
@@ -54,7 +68,7 @@ input {
 
   .pagename {
     text-decoration: underline;
-    font-size: 1.2em;
+    font-size: 1.1em;
   }
 }
 
@@ -103,7 +117,7 @@ iframe {
 }
 
 .score {
-  font-size: 1.2em;
+  font-size: 1.1em;
 }
 // BUTTONS
 #username, #gamename, #existinggame, .user-holder, .new-game-holder {

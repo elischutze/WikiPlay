@@ -4,7 +4,6 @@ for Neo4j import. Make sure to run 'addDelimiters' module before import.
 Usage: python3 preprocess.py [SQL DUMP FILENAME] [OUTPUT FILENAME] [DUMP TYPE]
 
 DUMP TYPE: use 'pagenames' for titles dump or 'pagelinks' for links dump
-
 """
 import re
 import sys
@@ -24,7 +23,7 @@ TYPE = sys.argv[3]
 ## Pattern to match start of INSERT statement in sql file
 insertinto = re.compile("^INSERT INTO")
 
-#initialize the OUTPUT file (wipe before start )
+# Initialize the OUTPUT file (wipe before start )
 with open(OUTPUT,'w') as r:
     none = 0
 
@@ -57,13 +56,13 @@ def split_lines(line):
     return list(mapped_rows)
 
 """
-We add pipe '|' delimiters to avoid conflicts with commas inside our fields
+We add pipe | delimiters to avoid conflicts with commas inside our fields
 """
 def addPipeDelimiters(line):
     row = line.split(",", maxsplit=2)
     if(TYPE=="pagelinks"):
         row[2] = "".join(row[2].split(",")[:-1])
-    elif(TYPE=="pagenames"):
+    elif(TYPE=='pagenames'):
         row[2] = row[2].split("','")[0]+"'"
     return "|"+"|,|".join(row)+"|"
 
