@@ -4,22 +4,14 @@ const games = {}
 module.exports = io => {
   io.on('connection', (client) => {
     players[client.id] = { name: null, room: null }
-
     client.on('disconnect', () => {
-      // TODO if (players[client.id].name) {
-      //   for (let game = 0; game < Object.keys(games).length; game++) {
-      //     const index = games[Object.keys[game]].players.indexOf(players[client.id].name)
-      //     if (index >= 0) {
-      //       games[game][players].splice(index, 1)
-      //     }
-      //   }
-      // }
       delete players[client.id]
     })
+
     client.on('setName', name => {
-      // TODO if name already exists
       players[client.id].name = name
     })
+
     client.on('joinNewGame', (name, room) => {
       // check if player exists
       if (client.id in players) {
@@ -80,7 +72,5 @@ module.exports = io => {
       games[room].clicked(players[client.id].name)
       client.broadcast.to(room).emit('increment', players[client.id].name, num)
     })
-
 // client.on list end
-  })
-}
+  }) }

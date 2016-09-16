@@ -1,3 +1,7 @@
+"""
+This helper script turns our preliminary pipe delimiters
+to correctly placed commas to prepare data for import
+"""
 import re
 import sys
 
@@ -14,12 +18,3 @@ with open(input,'r') as inputFile:
             count+=1
             print(count,":",newline)
             outputFile.write(newline)
-
-
-
-
-
-
-
-
-

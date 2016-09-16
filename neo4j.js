@@ -1,5 +1,3 @@
-// const fs = require('fs');
-// const _ = require('lodash');
 const neo4j = require('neo4j-driver').v1
 // Initialize connection to Neo4J Driver
 const driver = neo4j.driver('bolt://localhost', neo4j.auth.basic('neo4j', '1234'))
